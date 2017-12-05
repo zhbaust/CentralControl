@@ -10,6 +10,7 @@ import com.aust.bean.Jobtransfer;
 import com.aust.bean.Page;
 import com.aust.dao.impl.JobTransferDaoImpl;
 import com.aust.dao.inter.JobTransferDaoInter;
+import com.aust.tools.StringTool;
 
 import net.sf.json.JSONObject;
 
@@ -26,10 +27,11 @@ public void editJobtransfer(Jobtransfer jobtransfer) {
 	
 	List<Object> params = new LinkedList<>();
 	
-	sql = "UPDATE cc_jobtransfer SET transferreson=?  WHERE id=?";
+	sql = "UPDATE cc_jobtransfer SET transferreson=? ,remark =? WHERE id=?";
 	
 	
 	params.add(jobtransfer.getTransferreson());
+	params.add(jobtransfer.getRemark());
 	params.add(jobtransfer.getId());
 	//System.out.println("sql"+sql);
 	//更新学生信息
@@ -132,6 +134,107 @@ private long getCount(Jobtransfer jobtransfer){
 			int operatorid = jobtransfer.getOperator().getId();
 			param.add(operatorid);
 			sb.append("AND operatorid=? ");
+		}
+		
+	}
+	String sql = sb.toString().replaceFirst("AND", "WHERE");
+	
+	long count = dao.count(sql, param).intValue();
+	
+	return count;
+}
+
+
+public String getJobtransferList(Jobtransfer jobtransfer, String name, String startdate, String enddate, Page page) {
+	// TODO Auto-generated method stub
+	StringBuffer sb = new StringBuffer("SELECT * FROM cc_jobtransfer ");
+	//参数
+	List<Object> param = new LinkedList<>();
+	//判断条件
+	if(name!=null){
+		
+	}
+	if(startdate.length()>0 && enddate.length()>0){
+			param.add(StringTool.StrTosqlDate(startdate));
+			param.add(StringTool.StrTosqlDate(enddate));
+			sb.append("AND (transferdate>= ? and transferdate<= ? )");
+	}
+
+	if(jobtransfer != null){ 
+		
+		if(jobtransfer.getOlddepartment() != null){//条件：年级
+			int olddepartmentid = jobtransfer.getOlddepartment().getId();
+			param.add(olddepartmentid);
+			sb.append("AND olddepartmentid=? ");
+		}
+		if(jobtransfer.getDepartment() != null){//条件：年级
+			int departmentid = jobtransfer.getDepartment().getId();
+			param.add(departmentid);
+			sb.append("AND departmentid=? ");
+		}
+		if(jobtransfer.getTransferreson().length()>0){//条件：年级
+			
+			sb.append("AND transferreson  like '%"+jobtransfer.getTransferreson()+"%' ");
+		}
+		
+	}
+	//添加排序
+	sb.append("ORDER BY id ASC ");
+	//分页
+	if(page != null){
+		param.add(page.getStart());
+		param.add(page.getSize());
+		sb.append("limit ?,?");
+	}
+	String sql = sb.toString().replaceFirst("AND", "WHERE");
+	//获取数据
+	System.out.println("SQL:"+sql);
+	List<Jobtransfer> list = dao.getJobtransferList(sql, param);
+	//获取总记录数
+	long total = getCount(jobtransfer, name,startdate,enddate);
+	
+	//定义Map
+	Map<String, Object> jsonMap = new HashMap<String, Object>();  
+	//total键 存放总记录数，必须的
+    jsonMap.put("total", total);
+    //rows键 存放每页记录 list 
+    jsonMap.put("rows", list); 
+    //格式化Map,以json格式返回数据
+    String result = JSONObject.fromObject(jsonMap).toString();
+    
+    //返回
+	return result;
+}
+private long getCount(Jobtransfer jobtransfer, String name, String startdate, String enddate) {
+	// TODO Auto-generated method stub
+	StringBuffer sb = new StringBuffer("SELECT * FROM cc_jobtransfer ");
+	//参数
+	List<Object> param = new LinkedList<>();
+	//判断条件
+    if(name!=null){
+		
+	}
+	if(startdate.length()>0 && enddate.length()>0){
+			param.add(StringTool.StrTosqlDate(startdate));
+			param.add(StringTool.StrTosqlDate(enddate));
+			sb.append("AND (transferdate>= ? and transferdate<= ? )");
+	}
+
+	if(jobtransfer != null){ 
+		
+		if(jobtransfer.getOlddepartment() != null){//条件：年级
+			int olddepartmentid = jobtransfer.getOlddepartment().getId();
+			param.add(olddepartmentid);
+			sb.append("AND olddepartmentid=? ");
+		}
+		if(jobtransfer.getDepartment() != null){//条件：年级
+			int departmentid = jobtransfer.getDepartment().getId();
+			param.add(departmentid);
+			sb.append("AND departmentid=? ");
+		}
+		if(jobtransfer.getTransferreson().length()>0){//条件：年级
+			
+			sb.append("AND transferreson  like '%"+jobtransfer.getTransferreson()+"%' ");
 		}
 		
 	}

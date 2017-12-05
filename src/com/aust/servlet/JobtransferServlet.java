@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.beanutils.BeanUtils;
 
 import com.aust.bean.Department;
+import com.aust.bean.Employee;
 import com.aust.bean.Jobtransfer;
 import com.aust.bean.Page;
 import com.aust.service.JobtransferService;
@@ -59,9 +60,40 @@ public class JobtransferServlet extends HttpServlet {
 			deleteJobtransfer(request, response);
 		} else if("EditJobtransfer".equalsIgnoreCase(method)){ //修改学生信息
 			editJobtransfer(request, response);
-		} else if("JobtransfertoEmployeeList".equalsIgnoreCase(method)){ //获取当前学生班级的所有学生
-			//departmenttoEmployeeList(request, response);
+		} else if("JobtransferListQuery".equalsIgnoreCase(method)){ //获取当前学生班级的所有学生
+			jobtransferListQuery(request, response);
 		}
+	}
+
+	private void jobtransferListQuery(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// TODO Auto-generated method stub
+		String name = request.getParameter("name");
+		
+		//System.out.println("reson1:"+name);
+		String reson = request.getParameter("reson");
+		String startdate = request.getParameter("startdate");
+		String enddate = request.getParameter("enddate");
+		
+		String olddepartmentid = request.getParameter("olddepartmentid");
+		String departmentid = request.getParameter("departmentid");
+		
+		int page = Integer.parseInt(request.getParameter("page"));
+		int rows = Integer.parseInt(request.getParameter("rows"));
+		//System.out.println("reson:"+reson);
+		Jobtransfer jobtransfer =new Jobtransfer();
+//		if(name!=null)
+//			jobtransfer.setEmployeeid(employeeid);
+		if(reson!=null)
+			jobtransfer.setTransferreson(reson);
+		if(departmentid.length()>0)
+			jobtransfer.setDepartmentid(Integer.parseInt(departmentid));
+		if(olddepartmentid.length()>0)
+			jobtransfer.setOlddepartmentid(Integer.parseInt(olddepartmentid));
+	
+		String result = service.getJobtransferList(jobtransfer,name,startdate,enddate, new Page(page, rows));
+		//System.out.println("result"+result);	
+		//返回数据
+        response.getWriter().write(result);
 	}
 
 	private void editJobtransfer(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -129,7 +161,7 @@ public class JobtransferServlet extends HttpServlet {
 		//获取数据
 		String result = service.getJobtransferList(jobtransfer, new Page(page, rows));
 		//返回数据
-		System.out.println("2017-11-28："+result);
+		//System.out.println("2017-11-28："+result);
         response.getWriter().write(result);
 
 	}

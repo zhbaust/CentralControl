@@ -138,17 +138,17 @@
 	    		//var selectRow = $("#dataList").datagrid("getSelected");
 	    	var name = $("#queryname").val();
 	    	var tel = $("#querytel").val();
-	    	var cardnumber= $("querycard").val();
+	    	var cardnumber= $("#querycard").val();
 	    	var departmentid = $("#departmentList").combobox("getValue");
 	    	var professionid = $("#professionList").combobox("getValue");
 	    	var authorityid = $("#authorityList").combobox("getValue");
 	    	var page =1;
 	    	var rows=10;
-	    	var data = {name:name,tel:tel,cardnumber:cardnumber,departmentid:departmentid,professionid:professionid,authorityid:authorityid,page:page,rows:rows}
+	    	var data = {name:name,tel:tel,cardnumber:cardnumber,departmentid:departmentid,professionid:professionid,authorityid:authorityid,page:page,rows:rows};
 	    	//alert(name);
-        	if(name == null){
-            	$.messager.alert("消息提醒", "请输入要查询的班级名称", "warning");
-            } else{
+        	/* if(name == null){
+            	$.messager.alert("消息提醒", "请输入要查询的名称", "warning");
+            } else{ */
             			$.ajax({
 							type: "post",
 							url: "EmployeeServlet?method=EmployeeListQuery",
@@ -161,7 +161,7 @@
 							
 							
 						});
-            		}
+            		//}
 	    });
 	    
 	   //部门下拉框
@@ -505,11 +505,17 @@
 				}
 		    });
 		  
-		  
-		   
+		  //重置查询条件
+		     $("#qreset").click(function(){
+		    
+		    	$("#departmentList").textbox('setValue', "");
+				$("#professionList").textbox('setValue', "");
+				$("#authorityList").textbox('setValue', "");
+				$("#queryname").textbox('setValue', "");
+				$("#querytel").textbox('setValue', "");
+				$("#querycard").textbox('setValue', "");
+		    });
 		});
-	
-	
 	
 	</script>
 </head>
@@ -526,15 +532,16 @@
 			<div style="float: left;" class="datagrid-btn-separator"></div>
 		<div style="float: left;"><a id="delete" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-some-delete',plain:true">删除</a></div>
 			<div style="float: left;" class="datagrid-btn-separator"></div>
-		<div style="float: left;"><a id="transfer" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-book-reset',plain:true">调整部门</a></div>
+		<!-- <div style="float: left;"><a id="transfer" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-book-reset',plain:true">调整部门</a></div> -->
 		<div style="float: left; margin: 0 5px 0 5px">部门：<input id="departmentList" class="easyui-textbox" name="department" /></div>
 		<div style="float: left; margin: 0 5px 0 5px">工种：<input id="professionList" class="easyui-textbox" name="profession" /></div>
 		<div style="float: left; margin: 0 5px 0 5px">权限：<input id="authorityList" class="easyui-textbox" name="authority" /></div>
 		<div style="float: left; margin: 0 5px 0 5px">姓名：<input id="queryname" style="width: 100px; height: 25px;" class="easyui-textbox" name="qname" /></div>
 		<div style="float: left; margin: 0 5px 0 5px">电话：<input id="querytel" style="width: 100px; height: 25px;" class="easyui-textbox" name="qtel" /></div>
 		<div style="float: left; margin: 0 5px 0 5px">卡号：<input id="querycard" style="width: 100px; height: 25px;" class="easyui-textbox" name="qcardnumber" /></div>
-		<div style="margin-left: 10px;"><a id="query" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">查询</a></div>
-	
+		<div style="float: left; margin: 0 5px 0 5px"><a id="query" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">查询</a></div>
+		<div style="margin-left: 10px;"><a id="qreset" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">重置</a></div>
+		
 	</div>
 	
 	<!-- 添加员工窗口 -->

@@ -90,9 +90,7 @@
 	        displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录', 
 	    }); 
 	    //设置工具类按钮
-	    $("#add").click(function(){
-	    	$("#addDialog").dialog("open");
-	    });
+	   
 	    //修改
 	    $("#edit").click(function(){
 	    	var selectRows = $("#dataList").datagrid("getSelections");
@@ -102,218 +100,85 @@
 		    	$("#editDialog").dialog("open");
             }
 	    });
-	    //删除
-	    $("#delete").click(function(){
-	    	var selectRows = $("#dataList").datagrid("getSelections");
-        	var selectLength = selectRows.length;
-        	if(selectLength == 0){
-            	$.messager.alert("消息提醒", "请选择数据进行删除!", "warning");
-            } else{
-            	//var numbers = [];
-            	//$(selectRows).each(function(i, row){
-            	//	numbers[i] = row.number;
-            	//});
-            	var ids = [];
-            	$(selectRows).each(function(i, row){
-            		ids[i] = row.id;
-            	});
-            	$.messager.confirm("消息提醒", "将删除与部门相关的所有数据(包括人员信息)，确认继续？", function(r){
-            		if(r){
-            			$.ajax({
-							type: "post",
-							url: "DepartmentServlet?method=DeleteDepartment",
-							data: {ids: ids},
-							success: function(msg){
-								if(msg == "success"){
-									$.messager.alert("消息提醒","删除成功!","info");
-									//刷新表格
-									$("#dataList").datagrid("reload");
-									$("#dataList").datagrid("uncheckAll");
-								} else{
-									$.messager.alert("消息提醒","删除失败!","warning");
-									return;
-								}
-							}
-						});
-            		}
-            	});
-            }
-	    });
 	    
-	  	//年级下拉框
-	  	$("#gradeList").combobox({
-	  		width: "150",
+	    
+	  	//原部门下拉框
+	  	$("#olddepartmentList").combobox({
+	  		width: "100",
 	  		height: "25",
 	  		valueField: "id",
 	  		textField: "name",
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
+	  		url: "DepartmentServlet?method=DepartmenttoEmployeeList&t="+new Date().getTime(),
 	  		onChange: function(newValue, oldValue){
 	  			//加载该年级下的学生
-	  			$('#dataList').datagrid("options").queryParams = {gradeid: newValue};
+	  			$('#dataList').datagrid("options").queryParams = {olddepartmentid: newValue};
 	  			$('#dataList').datagrid("reload");
-	  			
-	  			//加载该年级下的班级
-	  			$("#clazzList").combobox("clear");
-	  			$("#clazzList").combobox("options").queryParams = {gradeid: newValue};
-	  			$("#clazzList").combobox("reload")
 	  		}
 	  	});
-	  	//班级下拉框
-	  	$("#clazzList").combobox({
-	  		width: "150",
+	
+	  //原部门下拉框
+	  	$("#departmentList").combobox({
+	  		width: "100",
 	  		height: "25",
 	  		valueField: "id",
 	  		textField: "name",
 	  		multiple: false, //可多选
 	  		editable: false, //不可编辑
 	  		method: "post",
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
+	  		url: "DepartmentServlet?method=DepartmenttoEmployeeList&t="+new Date().getTime(),
 	  		onChange: function(newValue, oldValue){
-	  			//加载班级下的学生
-	  			$('#dataList').datagrid("options").queryParams = {clazzid: newValue};
+	  			//加载该年级下的学生
+	  			$('#dataList').datagrid("options").queryParams = {departmentid: newValue};
 	  			$('#dataList').datagrid("reload");
 	  		}
 	  	});
 	  	
-	  	//下拉框通用属性
-	  	$("#add_gradeList, #edit_gradeList, #add_clazzList, #edit_clazzList").combobox({
-	  		width: "200",
-	  		height: "30",
-	  		valueField: "id",
-	  		textField: "name",
-	  		multiple: false, //可多选
-	  		editable: false, //不可编辑
-	  		method: "post",
-	  	});
-	  	
-	  	$("#add_gradeList").combobox({
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
-	  		onChange: function(newValue, oldValue){
-	  			//加载该年级下的班级
-	  			$("#add_clazzList").combobox("clear");
-	  			$("#add_clazzList").combobox("options").queryParams = {gradeid: newValue};
-	  			$("#add_clazzList").combobox("reload");
-	  		},
-			onLoadSuccess: function(){
-				//默认选择第一条数据
-				var data = $(this).combobox("getData");
-				$(this).combobox("setValue", data[0].id);
-	  		}
-	  	});
-	  	$("#add_clazzList").combobox({
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
-	  		onLoadSuccess: function(){
-		  		//默认选择第一条数据
-				var data = $(this).combobox("getData");;
-				$(this).combobox("setValue", data[0].id);
-	  		}
-	  	});
-	  	
-	  	$("#edit_gradeList").combobox({
-	  		url: "GradeServlet?method=GradeList&t="+new Date().getTime(),
-	  		onChange: function(newValue, oldValue){
-	  			//加载该年级下的班级
-	  			$("#edit_clazzList").combobox("clear");
-	  			$("#edit_clazzList").combobox("options").queryParams = {gradeid: newValue};
-	  			$("#edit_clazzList").combobox("reload");
-	  		},
-			onLoadSuccess: function(){
-				//默认选择第一条数据
-				var data = $(this).combobox("getData");
-				$(this).combobox("setValue", data[0].id);
-	  		}
-	  	});
-	  	
-	  	$("#edit_clazzList").combobox({
-	  		url: "ClazzServlet?method=ClazzList&t="+new Date().getTime(),
-			onLoadSuccess: function(){
-				//默认选择第一条数据
-				var data = $(this).combobox("getData");
-				$(this).combobox("setValue", data[0].id);
-	  		}
-	  	});
-	  	
-	  	//设置添加学生窗口
-	    $("#addDialog").dialog({
-	    	title: "添加部门",
-	    	width: 450,
-	    	height: 350,
-	    	iconCls: "icon-add",
-	    	modal: true,
-	    	collapsible: false,
-	    	minimizable: false,
-	    	maximizable: false,
-	    	draggable: true,
-	    	closed: true,
-	    	buttons: [
-	    		{
-					text:'添加',
-					plain: true,
-					iconCls:'icon-user_add',
-					handler:function(){
-						var validate = $("#addForm").form("validate");
-						if(!validate){
-							$.messager.alert("消息提醒","请检查你输入的数据!","warning");
-							return;
-						} else{
-							//var gradeid = $("#add_gradeList").combobox("getValue");
-							//var clazzid = $("#add_clazzList").combobox("getValue");
-							$.ajax({
-								type: "post",
-								url: "DepartmentServlet?method=AddDepartment",
-								data: $("#addForm").serialize(),
-								success: function(msg){
-									if(msg == "success"){
-										$.messager.alert("消息提醒","添加成功!","info");
-										//关闭窗口
-										$("#addDialog").dialog("close");
-										//清空原表格数据
-										$("#add_name").textbox('setValue', "");
-										$("#add_leadid").textbox('setValue', "");
-										$("#add_tel").textbox('setValue', "");
-										$("#add_remark").textbox('setValue', "");
-										
-										//重新刷新页面数据
-										//$('#dataList').datagrid("options").queryParams = {clazzid: clazzid};
-							  			$('#dataList').datagrid("reload");
-							  			//$("#gradeList").combobox('setValue', gradeid);
-							  			//setTimeout(function(){
-										//	$("#clazzList").combobox('setValue', clazzid);
-										//}, 100);
-										
-									} else if(msg=="duplicate"){
-										$.messager.alert("消息提醒","添加部门名称已经存在!","warning");
-									}else{
-										$.messager.alert("消息提醒","添加失败!","warning");
-										return;
-									}
-								}
-							});
-						}
-					}
-				},
-				{
-					text:'重置',
-					plain: true,
-					iconCls:'icon-reload',
-					handler:function(){
-						$("#add_name").textbox('setValue', "");
-						$("#add_tel").textbox('setValue', "");
-						$("#add_remark").textbox('setValue', "");
-						//重新加载年级
-						//$("#add_gradeList").combobox("clear");
-					    //$("#add_gradeList").combobox("reload");
-					}
-				},
-			]
+	  	 //查询
+	     $("#query").click(function(){
+	    
+	    	var olddepartmentid = $("#olddepartmentList").combobox("getValue");
+	    	var departmentid = $("#departmentList").combobox("getValue");
+	    	var name = $("#qname").val();
+	    	
+	    	var startdate = $("#startdate").textbox("getText");
+	    	var enddate =  $("#enddate").textbox("getText");
+	    	var reson= $("#reson").val();
+	    	//alert(startdate);
+	    	var page =1;
+	    	var rows=10;
+	    	var data = {name:name,olddepartmentid:olddepartmentid,startdate:startdate,enddate:enddate,departmentid:departmentid,reson:reson,page:page,rows:rows};
+	 
+         			$.ajax({
+							type: "post",
+							url: "JobtransferServlet?method=JobtransferListQuery&t="+new Date().getTime(),
+							data: data,
+							dataType:"json",
+							success: function (data) {
+								$("#dataList").datagrid("loadData", data);  //动态取数据
+								//$("#dataList").datagrid("reload");
+							}
+					});
 	    });
+	  	 
+	   //重置查询条件
+	     $("#qreset").click(function(){
+	    
+	    	$("#olddepartmentList").textbox('setValue', "");
+			$("#departmentList").textbox('setValue', "");
+			$("#qname").textbox('setValue', "");
+			$("#startdate").textbox('setValue', "");
+			$("#enddate").textbox('setValue', "");
+			$("#reson").textbox('setValue', "");
+	    
+	    });
+	  	 
 	  	
 	  	//设置编辑部门窗口
 	    $("#editDialog").dialog({
-	    	title: "修改部门信息",
+	    	title: "修改调动原因",
 	    	width: 450,
 	    	height: 350,
 	    	iconCls: "icon-edit",
@@ -340,18 +205,15 @@
 							
 							var id = $("#dataList").datagrid("getSelected").id;
 							
-							var name = $("#edit_name").textbox("getText");
-							var leadid = $("#edit_leadid").combobox("getValue");
-							var tel = $("#edit_tel").textbox("getText");
+							var transferreson = $("#edit_reson").textbox("getText");
 							var remark = $("#edit_remark").textbox("getText");
 							
-							var data = {id:id,name:name,leadid:leadid,tel:tel,remark:remark};
-							
-							
+							var data = {id:id,transferreson:transferreson,remark:remark};
+										
 							
 							$.ajax({
 								type: "post",
-								url: "DepartmentServlet?method=EditDepartment&t="+new Date().getTime(),
+								url: "JobtransferServlet?method=EditJobtransfer&t="+new Date().getTime(),
 								data: data,
 								success: function(msg){
 									if(msg == "success"){
@@ -383,33 +245,26 @@
 					iconCls:'icon-reload',
 					handler:function(){
 						//清空表单
-						$("#add_name").textbox('setValue', "");
-						$("#add_tel").textbox('setValue', "");
-						$("#add_remark").textbox('setValue', "");
-						
-						//$("#edit_gradeList").combobox("clear");
-						//$("#edit_gradeList").combobox("reload");
+						$("#edit_reson").textbox('setValue', "");
+						$("#edit_remark").textbox('setValue', "");
 					}
 				}
 			],
 			onBeforeOpen: function(){
 				var selectRow = $("#dataList").datagrid("getSelected");
 				//设置值
-				$("#edit_name").textbox('setValue', selectRow.name);
+				//$("#edit_id").textbox('setValue', selectRow.id);
+				$("#edit_name").textbox('setValue', selectRow.employee.name);
 				//$("#edit_leadid").textbox('setValue', selectRow.employee.name);
-				$("#edit_leadid").combobox("setValue", selectRow.employee.id);
-				$("#edit_tel").textbox('setValue', selectRow.tel);
+				$("#edit_olddepartment").textbox("setValue", selectRow.olddepartment.name);
+				$("#edit_department").textbox("setValue", selectRow.department.name);
+				$("#edit_reson").textbox('setValue', selectRow.transferreson);
 				$("#edit_remark").textbox('setValue', selectRow.remark);
-				//$("#edit_photo").attr("src", "PhotoServlet?method=GetPhoto&type=2&number="+selectRow.number);
-				//var gradeid = selectRow.gradeid;
-				//var clazzid = selectRow.clazzid;
-				//$("#edit_gradeList").combobox('setValue', gradeid);
-				//setTimeout(function(){
-				//	$("#edit_clazzList").combobox('setValue', clazzid);
-				//}, 100);
 				
 			}
 	    });
+	  	
+	   
 	   
 	});
 	</script>
@@ -423,44 +278,39 @@
 	<div id="toolbar">
 		
 		<div style="float: left;"><a id="edit" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">调动原因修改</a></div>
-			
-		
-		<!-- <div style="float: left; margin: 0 10px 0 10px">年级：<input id="gradeList" class="easyui-textbox" name="grade" /></div>
-		<div style="margin-left: 10px;">班级：<input id="clazzList" class="easyui-textbox" name="clazz" /></div>
-	     -->
+		<div style="float: left; margin: 0 5px 0 5px">原部门：<input id="olddepartmentList" class="easyui-textbox" name="olddepartment" /></div>
+		<div style="float: left; margin: 0 5px 0 5px">现部门：<input id="departmentList" class="easyui-textbox" name="department" /></div>
+		<div style="float: left; margin: 0 5px 0 5px">姓名：<input id="qname" style="width: 100px; height: 25px;" class="easyui-textbox" name="qname" /></div>
+		<div style="float: left; margin: 0 5px 0 5px">调动日期：<input id="startdate" style="width: 100px; height: 25px;" class="easyui-datebox" name=""startdate"" /></div>
+		<div style="float: left; margin: 0 5px 0 5px">至<input id="enddate" style="width: 100px; height: 25px;" class="easyui-datebox" name="enddate" /></div>
+		<div style="float: left; margin: 0 5px 0 5px">原因：<input id="reson" style="width: 100px; height: 25px;" class="easyui-textbox" name="reson" /></div>
+		<div style="float: left; margin: 0 5px 0 5px"><a id="query" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">查询</a></div>
+		<div style="margin-left: 10px;"><a id="qreset" href="javascript:;" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">重置</a></div>
 	</div>
 	
 	<!-- 修改学生窗口 -->
 	<div id="editDialog" style="padding: 10px">
     	<form id="editForm" method="post">
-	    	<table cellpadding="8" >
-	    	    <tr>
-	    			<td>编号:</td>
-	    			<td><input id="edit_id" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="id" data-options="readonly:true" /></td>
-	    		</tr>
-	    		<tr>
+	    	<table cellpadding="3" >
+	    	  	<tr>
 	    			<td>姓名:</td>
 	    			<td><input id="edit_name" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="name" data-options="readonly:true" /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>原部门:</td>
-	    			<td><input id="edit_tel" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="tel" data-options="readonly:true"  /></td>
+	    			<td><input id="edit_olddepartment" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="olddepartment" data-options="readonly:true"  /></td>
 	    		</tr>
 	    		<tr>
 	    			<td>现部门:</td>
-	    			<td><input id="edit_tel" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="tel" validType="mobile" /></td>
+	    			<td><input id="edit_department" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="department"  data-options="readonly:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>领导:</td>
-	    			<td><select id="edit_leadid" class="easyui-combobox" data-options="editable: false, panelHeight: 50, width: 100, height: 30" name="leadid"><option value="1">赵宝</option><option value="2">林俊杰</option></select></td>
-	    		</tr>
-	    		<tr>
-	    			<td>电话:</td>
-	    			<td><input id="edit_tel" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="tel" validType="mobile" /></td>
+	    			<td>调动原因:</td>
+	    			<td><input id="edit_reson" style="width: 300px; height: 60px;" class="easyui-textbox" type="text" name="reson" data-options=" multiline: true"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>备注:</td>
-	    			<td><input id="edit_remark" style="width: 200px; height: 30px;" class="easyui-textbox" type="text" name="remark" /></td>
+	    			<td><input id="edit_remark" style="width: 300px; height: 60px;" class="easyui-textbox" type="text" name="remark" data-options=" multiline: true"/></td>
 	    		</tr>
 	    		
 	    	</table>
