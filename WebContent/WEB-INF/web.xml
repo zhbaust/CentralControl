@@ -96,4 +96,24 @@
     <servlet-name>JobtransferServlet</servlet-name>
     <url-pattern>/JobtransferServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>DeviceServlet</display-name>
+    <servlet-name>DeviceServlet</servlet-name>
+    <servlet-class>com.aust.servlet.DeviceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeviceServlet</servlet-name>
+    <url-pattern>/DeviceServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SupplierServlet</display-name>
+    <servlet-name>SupplierServlet</servlet-name>
+    <servlet-class>com.aust.servlet.SupplierServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SupplierServlet</servlet-name>
+    <url-pattern>/SupplierServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

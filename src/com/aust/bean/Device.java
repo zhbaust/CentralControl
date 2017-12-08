@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.*;
 public class Device{
      private int id;//编号
-     private int deviceid;//设备编号
+     private String deviceid;//设备编号
      private String name;//设备名称
      private String modal;//型号
      private int num;//数量
@@ -16,10 +16,10 @@ public class Device{
      public void setId(int id){
          this.id = id;
      }
-     public int getDeviceid(){
+     public String getDeviceid(){
          return deviceid;
      }
-     public void setDeviceid(int deviceid){
+     public void setDeviceid(String deviceid){
          this.deviceid = deviceid;
      }
      public String getName(){

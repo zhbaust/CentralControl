@@ -32,10 +32,10 @@
 						},
 						{"menuid":"3","icon":"","menuname":"设备管理",
 							"menus":[
-									{"menuid":"31","menuname":"设备管理","icon":"icon-user-teacher","url":"AuthorityServlet?method=toAuthorityListView"},
+									{"menuid":"31","menuname":"设备管理","icon":"icon-user-teacher","url":"DeviceServlet?method=toDeviceListView"},
 									{"menuid":"32","menuname":"入库管理","icon":"icon-user-teacher","url":"AuthorityServlet?method=toAuthorityListView"},
 									{"menuid":"33","menuname":"出库管理","icon":"icon-user-teacher","url":"AuthorityServlet?method=toAuthorityListView"},
-									{"menuid":"34","menuname":"厂家管理","icon":"icon-user-teacher","url":"AuthorityServlet?method=toAuthorityListView"},
+									{"menuid":"34","menuname":"厂家管理","icon":"icon-user-teacher","url":"SupplierServlet?method=toSupplierListView"},
 									{"menuid":"35","menuname":"维护计划管理","icon":"icon-user-teacher","url":"AuthorityServlet?method=toAuthorityListView"},
 									{"menuid":"36","menuname":"维护管理","icon":"icon-user-teacher","url":"AuthorityServlet?method=toAuthorityListView"},
 									{"menuid":"37","menuname":"巡检管理","icon":"icon-user-teacher","url":"AuthorityServlet?method=toAuthorityListView"},

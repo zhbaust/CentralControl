@@ -95,7 +95,7 @@ public class DepartmentServlet extends HttpServlet {
 
 	private void deleteDepartment(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// TODO Auto-generated method stub
-		//获取要删除的学号
+		//获取要删除的部门
 				String[] numbers = request.getParameterValues("numbers[]");
 				String[] ids = request.getParameterValues("ids[]");
 				try {
