@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.aust.bean.Department;
 import com.aust.bean.Device;
 import com.aust.bean.Device;
 import com.aust.bean.Page;
@@ -14,6 +15,7 @@ import com.aust.dao.inter.DeviceDaoInter;
 import com.aust.tools.MysqlTool;
 import com.aust.tools.StringTool;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class DeviceService {
@@ -185,6 +187,19 @@ public class DeviceService {
 		long count = dao.count(sql, param).intValue();
 
 		return count;
+	}
+
+	public String getAllDeviceList() {
+		// TODO Auto-generated method stub
+		//获取数据
+		List<Object> list = dao.getList(Device.class, "SELECT * FROM cc_device");
+		
+		//获取总记录数
+		
+        String result = JSONArray.fromObject(list).toString();
+        //System.out.println("SQL:"+result);
+        //返回
+		return result;
 	}
 
 }

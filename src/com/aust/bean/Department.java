@@ -8,8 +8,16 @@ public class Department{
      private int leadid;//部门领导   
 	private String tel;//部门电话
      private String remark;//备注
+     
      private Employee employee; //人员
-     public int getId(){
+     
+     public Employee getEmployee() {
+		return employee;
+	}
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+	public int getId(){
          return id;
      }
      public void setId(int id){
@@ -31,12 +39,7 @@ public class Department{
          this.leadid = leadid;
      }
      
-     public Employee getEmployee() {
- 		return employee;
- 	}
- 	public void setEmployee(Employee employee) {
- 		this.employee = employee;
- 	}
+   
      public String getTel(){
          return tel;
      }

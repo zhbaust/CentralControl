@@ -11,7 +11,29 @@ public class Input{
      private int validity;//有效期，月数
      private int supplierid;//采购厂家，供应商
      private String remark;//备注
-     public int getId(){
+     private Device device;
+     private Employee operator;
+     private Supplier supplier;
+     
+     public Device getDevice() {
+		return device;
+	}
+	public void setDevice(Device device) {
+		this.device = device;
+	}
+	public Employee getOperator() {
+		return operator;
+	}
+	public void setOperator(Employee operator) {
+		this.operator = operator;
+	}
+	public Supplier getSupplier() {
+		return supplier;
+	}
+	public void setSupplier(Supplier supplier) {
+		this.supplier = supplier;
+	}
+	public int getId(){
          return id;
      }
      public void setId(int id){
@@ -21,6 +43,9 @@ public class Input{
          return deviceid;
      }
      public void setDeviceid(int deviceid){
+    	 Device device = new Device();
+    	 device.setId(deviceid);
+    	 this.device=device;
          this.deviceid = deviceid;
      }
      public String getInputdate(){
@@ -45,6 +70,9 @@ public class Input{
          return operatorid;
      }
      public void setOperatorid(int operatorid){
+    	 Employee operator = new Employee();
+    	 operator.setId(operatorid);
+    	 this.operator=operator;
          this.operatorid = operatorid;
      }
      public int getValidity(){
@@ -57,6 +85,9 @@ public class Input{
          return supplierid;
      }
      public void setSupplierid(int supplierid){
+    	 Supplier supplier = new Supplier();
+    	 supplier.setId(supplierid);
+    	 this.supplier=supplier;
          this.supplierid = supplierid;
      }
      public String getRemark(){

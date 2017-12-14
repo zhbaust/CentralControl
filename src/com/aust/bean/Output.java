@@ -9,7 +9,30 @@ public class Output{
      private int receiveid;//领取人员
      private int sendid;//发放人员
      private String remark;//备注
-     public int getId(){
+     
+     private Device device;
+     private Employee receiver;
+     private Employee sender;
+     
+     public Device getDevice() {
+		return device;
+	}
+	public void setDevice(Device device) {
+		this.device = device;
+	}
+	public Employee getReceiver() {
+		return receiver;
+	}
+	public void setReceiver(Employee receiver) {
+		this.receiver = receiver;
+	}
+	public Employee getSender() {
+		return sender;
+	}
+	public void setSender(Employee sender) {
+		this.sender = sender;
+	}
+	public int getId(){
          return id;
      }
      public void setId(int id){
@@ -19,6 +42,9 @@ public class Output{
          return deviceid;
      }
      public void setDeviceid(int deviceid){
+    	 Device device = new Device();
+    	 device.setId(deviceid);
+    	 this.device=device;
          this.deviceid = deviceid;
      }
      public String getOutputdate(){
@@ -37,12 +63,18 @@ public class Output{
          return receiveid;
      }
      public void setReceiveid(int receiveid){
+    	 Employee receiver = new Employee();
+    	 receiver.setId(receiveid);
+    	 this.receiver=receiver;
          this.receiveid = receiveid;
      }
      public int getSendid(){
          return sendid;
      }
      public void setSendid(int sendid){
+    	 Employee sender = new Employee();
+    	 sender.setId(sendid);
+    	 this.sender= sender;
          this.sendid = sendid;
      }
      public String getRemark(){

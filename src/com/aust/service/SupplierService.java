@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.aust.bean.Supplier;
+import com.aust.bean.Employee;
 import com.aust.bean.Page;
 import com.aust.bean.Supplier;
 import com.aust.dao.impl.SupplierDaoImpl;
@@ -14,6 +15,7 @@ import com.aust.dao.inter.SupplierDaoInter;
 import com.aust.tools.MysqlTool;
 import com.aust.tools.StringTool;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class SupplierService {
@@ -197,6 +199,18 @@ public class SupplierService {
 		long count = dao.count(sql, param).intValue();
 
 		return count;
+	}
+
+	public String getAllSupplierList() {
+		// 获取数据
+		List<Object> list = dao.getList(Supplier.class, "SELECT * FROM cc_supplier");
+
+		// 获取总记录数
+
+		String result = JSONArray.fromObject(list).toString();
+		// System.out.println("SQL:"+result);
+		// 返回
+		return result;
 	}
 
 }

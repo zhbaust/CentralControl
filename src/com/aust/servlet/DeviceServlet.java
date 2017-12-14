@@ -68,7 +68,18 @@ public class DeviceServlet extends HttpServlet {
 			editDevice(request, response);
 		} else if ("DeviceListQuery".equalsIgnoreCase(method)) { // 获取当前学生班级的所有学生
 			deviceList(request, response);
+		} else if ("DevicetoInputList".equalsIgnoreCase(method)) { // 获取当前学生班级的所有学生
+			deviceToInputList(request, response);
 		}
+	}
+
+	private void deviceToInputList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// TODO Auto-generated method stub
+		// 获取数据
+		String result = service.getAllDeviceList();
+		// 返回数据
+		
+		response.getWriter().write(result);
 	}
 
 	private void editDevice(HttpServletRequest request, HttpServletResponse response) throws IOException {

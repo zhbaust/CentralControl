@@ -9,18 +9,18 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import com.aust.bean.Authority;
-import com.aust.bean.Department;
+import com.aust.bean.Device;
 import com.aust.bean.Employee;
-import com.aust.bean.Profession;
-import com.aust.dao.inter.EmployeeDaoInter;
+import com.aust.bean.Maintenanceplan;
+import com.aust.dao.inter.MaintenanceplanDaoInter;
 import com.aust.tools.MysqlTool;
 
-public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDaoInter{
+public class MaintenanceplanDaoImpl extends BaseDaoImpl implements MaintenanceplanDaoInter {
 
-public List<Employee> getEmployeeList(String sql, List<Object> param) {
+	@Override
+	public List<Maintenanceplan> getMaintenanceplanList(String sql, List<Object> param) {
 		// 数据集合
-		List<Employee> list = new LinkedList<>();
+		List<Maintenanceplan> list = new LinkedList<>();
 		try {
 			// 获取数据库连接
 			Connection conn = MysqlTool.getConnection();
@@ -39,27 +39,24 @@ public List<Employee> getEmployeeList(String sql, List<Object> param) {
 			// 遍历结果集
 			while (rs.next()) {
 				// 创建对象
-				Employee employee = new Employee();
+				Maintenanceplan maintenanceplan = new Maintenanceplan();
 				// 遍历每个字段
 				for (int i = 1; i <= meta.getColumnCount(); i++) {
 					String field = meta.getColumnName(i);
-					BeanUtils.setProperty(employee, field, rs.getObject(field));
+					BeanUtils.setProperty(maintenanceplan, field, rs.getObject(field));
 				}
 				// 查询部门
-				Department department = (Department) getObject(Department.class,
-						"SELECT * FROM cc_department WHERE id=?", new Object[] { employee.getDepartmentid() });
+				Device device = (Device) getObject(Device.class, "SELECT * FROM cc_device WHERE id=?",
+						new Object[] { maintenanceplan.getDeviceid() });
 				// 查询工种
-				Profession profession = (Profession) getObject(Profession.class,
-						"SELECT * FROM cc_profession WHERE id=?", new Object[] { employee.getProfessionid() });
-				// 查询权限
-				Authority authority = (Authority) getObject(Authority.class, "SELECT * FROM cc_authority WHERE id=?",
-						new Object[] { employee.getAuthorityid() });
+				Employee operator = (Employee) getObject(Employee.class, "SELECT * FROM cc_employee WHERE id=?",
+						new Object[] { maintenanceplan.getOperatorid() });
+
 				// 添加
-				employee.setDepartment(department);
-				employee.setProfession(profession);
-				employee.setAuthority(authority);
+				maintenanceplan.setDevice(device);
+				maintenanceplan.setOperator(operator);
 				// 添加到集合
-				list.add(employee);
+				list.add(maintenanceplan);
 			}
 			// 关闭连接
 			MysqlTool.closeConnection();
@@ -69,6 +66,6 @@ public List<Employee> getEmployeeList(String sql, List<Object> param) {
 			e.printStackTrace();
 		}
 		return list;
-		
 	}
+
 }

@@ -7,6 +7,23 @@ public class Inspectionplan{
      private int inspectioninterval;//维护周期，天数
      private String content;//维护内容
      private int operatorid;//操作人员
+     
+     private Device device;
+     private Employee operator;
+     
+     public Device getDevice() {
+		return device;
+	}
+	public void setDevice(Device device) {
+		this.device = device;
+	}
+	public Employee getOperator() {
+		return operator;
+	}
+	public void setOperator(Employee operator) {
+		this.operator = operator;
+	}
+     
      public int getId(){
          return id;
      }
@@ -17,6 +34,9 @@ public class Inspectionplan{
          return deviceid;
      }
      public void setDeviceid(int deviceid){
+    	 Device device = new Device();
+    	 device.setId(deviceid);
+    	 this.device=device;
          this.deviceid = deviceid;
      }
      public int getInspectioninterval(){
@@ -35,6 +55,9 @@ public class Inspectionplan{
          return operatorid;
      }
      public void setOperatorid(int operatorid){
+    	 Employee operator = new Employee();
+    	 operator.setId(operatorid);
+    	 this.operator=operator;
          this.operatorid = operatorid;
      }
 }

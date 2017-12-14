@@ -10,7 +10,17 @@ public class Command{
      private int publisherid;//领取人员
      private int categoryid;//指令类别
      private String remark;//备注
-     public int getId(){
+     
+     private Employee publisher;
+     
+     public Employee getPublisher() {
+		return publisher;
+	}
+	public void setPublisher(Employee publisher) {
+		this.publisher = publisher;
+	}
+	
+	public int getId(){
          return id;
      }
      public void setId(int id){
@@ -44,6 +54,9 @@ public class Command{
          return publisherid;
      }
      public void setPublisherid(int publisherid){
+    	 Employee publisher = new Employee();
+    	 publisher.setId(publisherid);
+    	 this.publisher=publisher;
          this.publisherid = publisherid;
      }
      public int getCategoryid(){

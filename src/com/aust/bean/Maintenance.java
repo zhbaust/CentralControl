@@ -8,7 +8,23 @@ public class Maintenance{
      private int operatorid;//维护人员
      private String dispose;//处理
      private String remark;//备注
-     public int getId(){
+     
+     private Device device;
+     private Employee operator;
+     
+     public Device getDevice() {
+		return device;
+	}
+	public void setDevice(Device device) {
+		this.device = device;
+	}
+	public Employee getOperator() {
+		return operator;
+	}
+	public void setOperator(Employee operator) {
+		this.operator = operator;
+	}
+	public int getId(){
          return id;
      }
      public void setId(int id){
@@ -18,6 +34,9 @@ public class Maintenance{
          return deviceid;
      }
      public void setDeviceid(int deviceid){
+    	 Device device = new Device();
+    	 device.setId(deviceid);
+    	 this.device=device;
          this.deviceid = deviceid;
      }
      public String getMaintenancetime(){
@@ -30,6 +49,9 @@ public class Maintenance{
          return operatorid;
      }
      public void setOperatorid(int operatorid){
+    	 Employee operator = new Employee();
+    	 operator.setId(operatorid);
+    	 this.operator=operator;
          this.operatorid = operatorid;
      }
      public String getDispose(){

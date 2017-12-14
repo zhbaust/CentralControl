@@ -65,7 +65,17 @@ public class SupplierServlet extends HttpServlet {
 			editSupplier(request, response);
 		} else if ("SupplierListQuery".equalsIgnoreCase(method)) { // 获取当前学生班级的所有学生
 			supplierList(request, response);
+		} else if ("SupplierInputList".equalsIgnoreCase(method)) { // 获取当前学生班级的所有学生
+			supplierInputList(request, response);
 		}
+	}
+
+	private void supplierInputList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String result = service.getAllSupplierList();
+		// 返回数据
+		// System.out.println("2017年11月28日 07:38:47："+result);
+		response.getWriter().write(result);
+		
 	}
 
 	private void editSupplier(HttpServletRequest request, HttpServletResponse response) throws IOException {
